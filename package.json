@@ -1,7 +1,7 @@
 {
     "name": "backbone.csp",
     "version": "0.1.0",
-    "description": "Add support for concurrent CSP processing patterns in Backbone.js",
+    "description": "Add support for concurrent CSP processing patterns to Backbone.js",
     "author": "Derek Kent <dak@dak.org>",
     "scripts": {
         "test": "node --harmony ./node_modules/.bin/gulp test"

@@ -1,6 +1,6 @@
 {
     "name": "backbone.csp",
-    "description": "Add support for concurrent CSP processing patterns in Backbone.js",
+    "description": "Add support for concurrent CSP processing patterns to Backbone.js",
     "main": "src/backbone.csp.js",
     "license": {
         "type": "MIT",
