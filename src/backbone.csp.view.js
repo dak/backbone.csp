@@ -16,18 +16,33 @@ class View extends Backbone.View {
         return ch;
     }
 
-    delegateEvents(events) {
-        if (!(events || (events = _.result(this, 'events')))) return this;
+    // Set callbacks, where `this.events` is a Map of
+    //
+    // *[[callbackFunction, [event selectors]]]*
+    //
+    //     new Map([
+    //       ['edit',      'mousedown .title'],
+    //       [this.save,   'click .button'],
+    //       [this.log,    ['mousedown .title', 'click .button']],
+    //     ])
+    //
+    // pairs. Callbacks will be bound to the view, with `this` set properly
+    // and will be passed the event channels as arguments.
+    // Uses event delegation for efficiency.
+    // Omitting the selector binds the event to `this.el`.
+    delegateEvents(map) {
+        if (!(map || (map = _.result(this, 'events')))) return this;
         this.undelegateEvents();
 
-        for (let key in events) {
-            let listeners = _.isArray(events[key]) ? events[key] : [events[key]],
-                method = _.bind(this[key], this),
-                channels = [];
+        map.forEach(function (events, method) {
+            let channels = [];
 
-            for (let [index, listener] of listeners.entries()) {
+            method = _.isString(method) ? _.bind(this[method], this) : _.bind(method, this);
+            events = _.isArray(events) ? events : [events];
+
+            for (let [index, event] of events.entries()) {
                 let $el = this.$el,
-                    match = listener.match(delegateEventSplitter),
+                    match = event.match(delegateEventSplitter),
                     eventName = match[1],
                     selector = match[2];
 
@@ -41,14 +56,14 @@ class View extends Backbone.View {
             }
 
             method(...channels);
-        }
+        }, this);
 
         return this;
     }
 
     undelegateEvents() {
         // close channel
-        
+
         super();
     }
 
