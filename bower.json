@@ -1,0 +1,30 @@
+{
+    "name": "backbone.csp",
+    "description": "Add support for concurrent CSP processing patterns in Backbone.js",
+    "main": "src/backbone.csp.js",
+    "license": {
+        "type": "MIT",
+        "url": "https://github.com/dak/backbone.csp/raw/master/LICENSE"
+    },
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+    "keywords": [
+        "backbone",
+        "csp",
+        "coroutines",
+        "concurrency",
+        "es6"
+    ],
+    "authors": ["Derek Kent <dak@dak.org>"],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/dak/backbone.csp.git"
+    },
+    "dependencies": {
+        "backbone": "~1.1.2",
+        "js-csp": "~0.3.1"
+    }
+}
