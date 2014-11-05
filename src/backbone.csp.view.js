@@ -21,9 +21,9 @@ class View extends Backbone.View {
     // *[[callbackFunction, [event selectors]]]*
     //
     //     new Map([
-    //       ['edit',      'mousedown .title'],
-    //       [this.save,   'click .button'],
-    //       [this.log,    ['mousedown .title', 'click .button']],
+    //         ['edit',      'mousedown .title'],
+    //         [this.save,   'click .button'],
+    //         [this.log,    ['mousedown .title', 'click .button']],
     //     ])
     //
     // pairs. Callbacks will be bound to the view, with `this` set properly
@@ -39,8 +39,8 @@ class View extends Backbone.View {
         map.forEach(function (events, method) {
             let channels = [];
 
-            method = _.isString(method) ? _.bind(this[method], this) : _.bind(method, this);
-            events = _.isArray(events) ? events : [events];
+            method = typeof method === 'string' ? this[method].bind(this) : method.bind(this);
+            events = Array.isArray(events) ? events : [events];
 
             for (let [index, event] of events.entries()) {
                 let $el = this.$el,
