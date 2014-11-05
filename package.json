@@ -1,7 +1,7 @@
 {
     "name": "backbone.csp",
     "version": "0.1.0",
-    "description": "Backbone extension with improved views and CSP channels",
+    "description": "Add support for concurrent CSP processing patterns in Backbone.js",
     "author": "Derek Kent <dak@dak.org>",
     "scripts": {
         "test": "node --harmony ./node_modules/.bin/gulp test"
@@ -9,7 +9,7 @@
     "main": "./src/backbone.csp.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/dak/backbone.csp.git"
+        "url": "git://github.com/dak/backbone.csp.git"
     },
     "bugs": {
         "url": "https://github.com/dak/backbone.csp/issues"
