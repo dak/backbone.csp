@@ -5,13 +5,21 @@ let delegateEventSplitter = /^(\S+)\s*(.*)$/;
 class View extends Backbone.View {
 
     constructor() {
+        this._eventListeners = [];
+
         super();
     }
 
-    listen($el, event, selector) {
-        var ch = csp.chan();
+    listen(el, event) {
+        let ch = csp.chan(),
+            callback = e => csp.putAsync(ch, e);
 
-        $el.on(event, selector, (e) => csp.putAsync(ch, e));
+        el = Array.isArray(el) ? el : [el];
+
+        for (let i=0, len=el.length; i < len; i++) {
+            el[i].addEventListener(event, callback);
+            this._eventListeners.push({el: el[i], event: event, callback: callback});
+        }
 
         return ch;
     }
@@ -43,18 +51,16 @@ class View extends Backbone.View {
             events = Array.isArray(events) ? events : [events];
 
             for (let [index, event] of events.entries()) {
-                let $el = this.$el,
+                let el = this.el,
                     match = event.match(delegateEventSplitter),
                     eventName = match[1],
                     selector = match[2];
 
-                eventName += '.delegateEvents' + this.cid;
-
                 if (selector !== '') {
-                    $el = $el.find(selector);
+                    el = el.querySelectorAll(selector);
                 }
 
-                channels.push(this.listen($el, eventName, selector));
+                channels.push(this.listen(el, eventName));
             }
 
             method(...channels);
@@ -64,9 +70,14 @@ class View extends Backbone.View {
     }
 
     undelegateEvents() {
-        // close channel
+        for (let i=0, len=this._eventListeners.length; i < len; i++) {
+            let listener = this._eventListeners[i];
+            listener.el.removeEventListener(listener.event, listener.callback);
+        }
 
-        super();
+        // TODO: close channel
+
+        return super();
     }
 
 }
