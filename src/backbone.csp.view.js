@@ -6,6 +6,7 @@ class View extends Backbone.View {
 
     constructor() {
         this._eventListeners = [];
+        this._listenChannels = [];
 
         super();
     }
@@ -20,6 +21,8 @@ class View extends Backbone.View {
             el[i].addEventListener(event, callback);
             this._eventListeners.push({el: el[i], event: event, callback: callback});
         }
+
+        this._listenChannels.push(ch);
 
         return ch;
     }
@@ -74,8 +77,12 @@ class View extends Backbone.View {
             let listener = this._eventListeners[i];
             listener.el.removeEventListener(listener.event, listener.callback);
         }
+        this._eventListeners = [];
 
-        // TODO: close channel
+        for (let i=0, len=this._listenChannels.length; i < len; i++) {
+            this._listenChannels[i].close();
+        }
+        this._listenChannels = [];
 
         return super();
     }
