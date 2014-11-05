@@ -32,6 +32,8 @@ class View extends Backbone.View {
     // Omitting the selector binds the event to `this.el`.
     delegateEvents(map) {
         if (!(map || (map = _.result(this, 'events')))) return this;
+        if (!(map instanceof Map)) return super(...arguments);
+
         this.undelegateEvents();
 
         map.forEach(function (events, method) {
